@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SNewsDao">
+  <resultMap id="BaseResultMap" type="com.pojo.SNews">
+    <id column="news_id" jdbcType="INTEGER" property="newsId" />
+    <result column="news_name" jdbcType="VARCHAR" property="newsName" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="conf" jdbcType="VARCHAR" property="conf" />
+    <result column="news_type" jdbcType="VARCHAR" property="newsType" />
+    <result column="start_name" jdbcType="VARCHAR" property="startName" />
+    <result column="start_id" jdbcType="INTEGER" property="startId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    news_id, news_name, c_time, conf, news_type, start_name, start_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from s_news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from s_news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="news_id" keyProperty="newsId" parameterType="com.pojo.SNews" useGeneratedKeys="true">
+    insert into s_news (news_name, c_time, conf, 
+      news_type, start_name, start_id
+      )
+    values (#{newsName,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{conf,jdbcType=VARCHAR}, 
+      #{newsType,jdbcType=VARCHAR}, #{startName,jdbcType=VARCHAR}, #{startId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="news_id" keyProperty="newsId" parameterType="com.pojo.SNews" useGeneratedKeys="true">
+    insert into s_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsName != null">
+        news_name,
+      </if>
+      <if test="cTime != null">
+        c_time,
+      </if>
+      <if test="conf != null">
+        conf,
+      </if>
+      <if test="newsType != null">
+        news_type,
+      </if>
+      <if test="startName != null">
+        start_name,
+      </if>
+      <if test="startId != null">
+        start_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsName != null">
+        #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null">
+        #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="startName != null">
+        #{startName,jdbcType=VARCHAR},
+      </if>
+      <if test="startId != null">
+        #{startId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.SNews">
+    update s_news
+    <set>
+      <if test="newsName != null">
+        news_name = #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        c_time = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        conf = #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null">
+        news_type = #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="startName != null">
+        start_name = #{startName,jdbcType=VARCHAR},
+      </if>
+      <if test="startId != null">
+        start_id = #{startId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.SNews">
+    update s_news
+    set news_name = #{newsName,jdbcType=VARCHAR},
+      c_time = #{cTime,jdbcType=TIMESTAMP},
+      conf = #{conf,jdbcType=VARCHAR},
+      news_type = #{newsType,jdbcType=VARCHAR},
+      start_name = #{startName,jdbcType=VARCHAR},
+      start_id = #{startId,jdbcType=INTEGER}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllNews" resultMap="BaseResultMap">
+    select * from s_news;
+  </select>
+</mapper>

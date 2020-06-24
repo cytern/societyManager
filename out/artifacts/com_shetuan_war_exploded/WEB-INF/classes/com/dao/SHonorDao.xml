@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SHonorDao">
+  <resultMap id="BaseResultMap" type="com.pojo.SHonor">
+    <id column="s_honor_id" jdbcType="INTEGER" property="sHonorId" />
+    <result column="s_honor_name" jdbcType="VARCHAR" property="sHonorName" />
+    <result column="society_id" jdbcType="INTEGER" property="societyId" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    s_honor_id, s_honor_name, society_id, c_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from s_honor
+    where s_honor_id = #{sHonorId,jdbcType=INTEGER}
+  </select>
+    <select id="getSHonorBySocietyId" resultType="com.pojo.SHonor">
+      select * from s_honor where society_id = #{societyId};
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from s_honor
+    where s_honor_id = #{sHonorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="s_honor_id" keyProperty="sHonorId" parameterType="com.pojo.SHonor" useGeneratedKeys="true">
+    insert into s_honor (s_honor_name, society_id, c_time
+      )
+    values (#{sHonorName,jdbcType=VARCHAR}, #{societyId,jdbcType=INTEGER}, #{cTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="s_honor_id" keyProperty="sHonorId" parameterType="com.pojo.SHonor" useGeneratedKeys="true">
+    insert into s_honor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sHonorName != null">
+        s_honor_name,
+      </if>
+      <if test="societyId != null">
+        society_id,
+      </if>
+      <if test="cTime != null">
+        c_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sHonorName != null">
+        #{sHonorName,jdbcType=VARCHAR},
+      </if>
+      <if test="societyId != null">
+        #{societyId,jdbcType=INTEGER},
+      </if>
+      <if test="cTime != null">
+        #{cTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.SHonor">
+    update s_honor
+    <set>
+      <if test="sHonorName != null">
+        s_honor_name = #{sHonorName,jdbcType=VARCHAR},
+      </if>
+      <if test="societyId != null">
+        society_id = #{societyId,jdbcType=INTEGER},
+      </if>
+      <if test="cTime != null">
+        c_time = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where s_honor_id = #{sHonorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.SHonor">
+    update s_honor
+    set s_honor_name = #{sHonorName,jdbcType=VARCHAR},
+      society_id = #{societyId,jdbcType=INTEGER},
+      c_time = #{cTime,jdbcType=TIMESTAMP}
+    where s_honor_id = #{sHonorId,jdbcType=INTEGER}
+  </update>
+</mapper>

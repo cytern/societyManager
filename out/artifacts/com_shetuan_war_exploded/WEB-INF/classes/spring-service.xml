@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.2.xsd
+">
+    <context:component-scan base-package="com.service"/>
+    <!--    注入业务类到spring-->
+    <bean id="societyServiceImpl" class="com.service.SocietyServiceImpl">
+        <property name="societyDao" ref="societyDao"/>
+    </bean>
+    <bean id="userServiceImpl" class="com.service.UserServiceImpl">
+        <property name="SUserDao" ref="SUserDao"/>
+    </bean>
+    <bean id="newsServiceImpl" class="com.service.NewsServiceImpl">
+        <property name="SNewsDao" ref="SNewsDao"/>
+    </bean>
+    <!--申明式事物配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--    aop事物支持-->
+     <tx:advice id="txAdvice" transaction-manager="transactionManager">
+         <tx:attributes>
+             <tx:method name="*" propagation="REQUIRED"/>
+         </tx:attributes>
+     </tx:advice>
+    <aop:config>
+            <aop:pointcut id="txPointCut" expression="execution(* com.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+    </aop:config>
+    <task:annotation-driven/>
+    <context:component-scan base-package="com.TimeTask"/>
+</beans>

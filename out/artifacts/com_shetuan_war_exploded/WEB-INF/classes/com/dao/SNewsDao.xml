@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SNewsDao">
+  <resultMap id="BaseResultMap" type="com.pojo.SNews">
+    <id column="news_id" jdbcType="INTEGER" property="newsId" />
+    <result column="news_name" jdbcType="VARCHAR" property="newsName" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="conf" jdbcType="VARCHAR" property="conf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    news_id, news_name, c_time, conf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from s_news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+    <select id="getAllNews" resultType="com.pojo.SNews">
+      select * from s_news;
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from s_news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="news_id" keyProperty="newsId" parameterType="com.pojo.SNews" useGeneratedKeys="true">
+    insert into s_news (news_name, c_time, conf
+      )
+    values (#{newsName,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{conf,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="news_id" keyProperty="newsId" parameterType="com.pojo.SNews" useGeneratedKeys="true">
+    insert into s_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsName != null">
+        news_name,
+      </if>
+      <if test="cTime != null">
+        c_time,
+      </if>
+      <if test="conf != null">
+        conf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsName != null">
+        #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        #{conf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.SNews">
+    update s_news
+    <set>
+      <if test="newsName != null">
+        news_name = #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        c_time = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        conf = #{conf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.SNews">
+    update s_news
+    set news_name = #{newsName,jdbcType=VARCHAR},
+      c_time = #{cTime,jdbcType=TIMESTAMP},
+      conf = #{conf,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+</mapper>

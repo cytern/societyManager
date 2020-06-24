@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ActivityDao">
+  <resultMap id="BaseResultMap" type="com.pojo.Activity">
+    <id column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+    <result column="s_time" jdbcType="TIMESTAMP" property="sTime" />
+    <result column="e_time" jdbcType="TIMESTAMP" property="eTime" />
+    <result column="conf" jdbcType="VARCHAR" property="conf" />
+    <result column="society_id" jdbcType="INTEGER" property="societyId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_id, activity_name, s_time, e_time, conf, society_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+    <select id="getActivityById" resultType="com.pojo.Activity">
+      select * from activity where society_id = #{societyId};
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="activity_id" keyProperty="activityId" parameterType="com.pojo.Activity" useGeneratedKeys="true">
+    insert into activity (activity_name, s_time, e_time, 
+      conf, society_id)
+    values (#{activityName,jdbcType=VARCHAR}, #{sTime,jdbcType=TIMESTAMP}, #{eTime,jdbcType=TIMESTAMP}, 
+      #{conf,jdbcType=VARCHAR}, #{societyId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="activity_id" keyProperty="activityId" parameterType="com.pojo.Activity" useGeneratedKeys="true">
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityName != null">
+        activity_name,
+      </if>
+      <if test="sTime != null">
+        s_time,
+      </if>
+      <if test="eTime != null">
+        e_time,
+      </if>
+      <if test="conf != null">
+        conf,
+      </if>
+      <if test="societyId != null">
+        society_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityName != null">
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="sTime != null">
+        #{sTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eTime != null">
+        #{eTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="societyId != null">
+        #{societyId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Activity">
+    update activity
+    <set>
+      <if test="activityName != null">
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="sTime != null">
+        s_time = #{sTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eTime != null">
+        e_time = #{eTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        conf = #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="societyId != null">
+        society_id = #{societyId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.Activity">
+    update activity
+    set activity_name = #{activityName,jdbcType=VARCHAR},
+      s_time = #{sTime,jdbcType=TIMESTAMP},
+      e_time = #{eTime,jdbcType=TIMESTAMP},
+      conf = #{conf,jdbcType=VARCHAR},
+      society_id = #{societyId,jdbcType=INTEGER}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>

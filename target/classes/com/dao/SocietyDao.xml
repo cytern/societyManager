@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SocietyDao">
+  <resultMap id="BaseResultMap" type="com.pojo.Society">
+    <id column="society_id" jdbcType="INTEGER" property="societyId" />
+    <result column="society_name" jdbcType="VARCHAR" property="societyName" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="conf" jdbcType="VARCHAR" property="conf" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    society_id, society_name, c_time, conf, purpose
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from society
+    where society_id = #{societyId,jdbcType=INTEGER}
+  </select>
+    <select id="getAllSociety" resultType="com.pojo.Society">
+      select <include refid="Base_Column_List"></include> from society;
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from society
+    where society_id = #{societyId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteAll">
+    delete society,activity,s_honor from society,activity,s_honor where
+    society.society_id = activity.society_id
+    and society.society_id = s_honor.society_id
+    and society.society_id=#{id};
+  </delete>
+  <insert id="insert" keyColumn="society_id" keyProperty="societyId" parameterType="com.pojo.Society" useGeneratedKeys="true">
+    insert into society (society_name, c_time, conf, 
+      purpose)
+    values (#{societyName,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{conf,jdbcType=VARCHAR}, 
+      #{purpose,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="society_id" keyProperty="societyId" parameterType="com.pojo.Society" useGeneratedKeys="true">
+    insert into society
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="societyName != null">
+        society_name,
+      </if>
+      <if test="cTime != null">
+        c_time,
+      </if>
+      <if test="conf != null">
+        conf,
+      </if>
+      <if test="purpose != null">
+        purpose,
+      </if>
+      <if test="imgUrl != null">
+        img_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="societyName != null">
+        #{societyName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null">
+        #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null">
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Society">
+    update society
+    <set>
+      <if test="societyName != null">
+        society_name = #{societyName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        c_time = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conf != null">
+        conf = #{conf,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null">
+        purpose = #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null">
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where society_id = #{societyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.Society">
+    update society
+    set society_name = #{societyName,jdbcType=VARCHAR},
+      c_time = #{cTime,jdbcType=TIMESTAMP},
+      conf = #{conf,jdbcType=VARCHAR},
+      purpose = #{purpose,jdbcType=VARCHAR}
+    where society_id = #{societyId,jdbcType=INTEGER}
+  </update>
+</mapper>
